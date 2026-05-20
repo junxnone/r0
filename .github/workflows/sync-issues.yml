@@ -1,0 +1,316 @@
+name: Sync Issues to Docs
+
+on:
+  issues:
+    types: [opened, edited, labeled, unlabeled, deleted, closed, reopened]
+
+permissions:
+  contents: write
+  issues: read
+
+concurrency:
+  group: sync-issues
+  cancel-in-progress: false
+
+jobs:
+  sync-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: gh-pages
+          fetch-depth: 0
+
+      - name: Sync issue to markdown
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const path = require('path');
+
+            const issue = context.payload.issue;
+            const action = context.payload.action;
+            const docsDir = 'docs';
+            const fileName = `issue-${issue.number}.md`;
+            const filePath = path.join(docsDir, fileName);
+
+            // 确保 docs 目录存在
+            if (!fs.existsSync(docsDir)) {
+              fs.mkdirSync(docsDir, { recursive: true });
+            }
+
+            // 如果 issue 被删除或关闭，删除对应的文件
+            if (action === 'deleted' || action === 'closed') {
+              if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+                console.log(`Deleted ${filePath}`);
+              }
+            } else {
+              // 解析 issue body 中的第一个 # 一级标题作为 title
+              let title = issue.title;
+              const body = issue.body || '';
+              const h1Match = body.match(/^#\s+(.+)$/m);
+              if (h1Match) {
+                title = h1Match[1].trim();
+              }
+
+              // 合并标签：从 issue title (name) 中提取 + GitHub 标签
+              const allLabels = new Set();
+
+              // 从 issue title 中提取标签（以空格分隔）
+              const titleTags = issue.title.split(/\s+/).filter(tag => tag.trim());
+              titleTags.forEach(tag => allLabels.add(tag.trim()));
+
+              // 添加 GitHub 手动添加的标签
+              issue.labels.forEach(label => allLabels.add(label.name));
+
+              const labelsArray = Array.from(allLabels);
+              const labelsStr = labelsArray.join(', ');
+
+              const frontmatter = [
+                '---',
+                `title: ${title}`,
+                `issue_number: ${issue.number}`,
+                `author: ${issue.user.login}`,
+                `created_at: ${issue.created_at}`,
+                `updated_at: ${issue.updated_at}`,
+                `state: ${issue.state}`,
+                `labels: [${labelsStr}]`,
+                '---',
+                '',
+                body || '*No description provided.*'
+              ].join('\n');
+
+              fs.writeFileSync(filePath, frontmatter, 'utf8');
+              console.log(`${action === 'opened' ? 'Created' : 'Updated'} ${filePath}`);
+            }
+
+            // 更新侧边栏
+            const { data: allIssues } = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+
+            // 按标签分组
+            const issuesByLabel = {};
+            const issuesWithoutLabel = [];
+
+            allIssues.forEach(issue => {
+              // 合并标签：从 issue title 中提取 + GitHub 标签
+              const allLabels = new Set();
+
+              // 从 issue title 中提取标签（以空格分隔）
+              const titleTags = issue.title.split(/\s+/).filter(tag => tag.trim());
+              titleTags.forEach(tag => allLabels.add(tag.trim()));
+
+              // 添加 GitHub 手动添加的标签
+              issue.labels.forEach(label => allLabels.add(label.name));
+
+              // 从 body 中提取标题用于显示
+              let displayTitle = issue.title;
+              const body = issue.body || '';
+              const h1Match = body.match(/^#\s+(.+)$/m);
+              if (h1Match) {
+                displayTitle = h1Match[1].trim();
+              }
+
+              issue.displayTitle = displayTitle;
+
+              if (allLabels.size === 0) {
+                issuesWithoutLabel.push(issue);
+              } else {
+                allLabels.forEach(label => {
+                  if (!issuesByLabel[label]) {
+                    issuesByLabel[label] = [];
+                  }
+                  issuesByLabel[label].push(issue);
+                });
+              }
+            });
+
+            // 不再生成 _sidebar.md（使用TOC插件自动生成当前页目录）
+            console.log('Sidebar disabled, using TOC plugin for current page navigation');
+
+            // 生成标签页面
+            const sortedLabels = Object.keys(issuesByLabel).sort();
+
+            // 按分类组织标签
+            const tagCategories = {
+              'tools': ['Blender', 'Unity', 'Unreal', 'ZBrush', 'Substance', 'Three.js', 'glTF'],
+              'tech': ['建模', '渲染', '材质', '纹理', '光照', '动画', '着色器', 'UV', 'PBR', 'HDRI', 'WebGL', 'Nanite', 'LOD', 'ShaderLab', 'JavaScript'],
+              'learn': ['教程', '理论', '进阶', '流程', '技术', '技术对比', '程序化', '3D'],
+              'app': ['游戏开发', '前端', '优化', '性能', '3D格式'],
+              'special': ['次世代', '实时渲染', '物理模拟', '粒子系统', '特效', '角色']
+            };
+
+            // 生成主页 - 按文章数量排序标签
+            let homeContent = '# T2 Wiki\n\n';
+            homeContent += '> 基于 GitHub Issues 的 Wiki\n\n';
+            homeContent += '<div class="homepage-search">\n';
+            homeContent += '  <input type="search" placeholder="🔍 搜索文章..." class="search-input" />\n';
+            homeContent += '  <div class="search-results-panel"></div>\n';
+            homeContent += '</div>\n\n';
+            homeContent += '## 📚 按标签浏览\n\n';
+            homeContent += '<div class="tag-buttons">\n';
+
+            // 按文章数量排序所有标签
+            const tagCounts = sortedLabels.map(tag => ({
+              tag: tag,
+              count: issuesByLabel[tag].length
+            }));
+            tagCounts.sort((a, b) => b.count - a.count);
+
+            // 显示所有标签
+            tagCounts.forEach(({ tag, count }) => {
+              homeContent += `  <a href="#/tags/${encodeURIComponent(tag)}" class="tag-button">${tag} <span class="tag-count">${count}</span></a>\n`;
+            });
+
+            homeContent += '</div>\n\n';
+            homeContent += '## [📜 历史记录](/history)\n\n';
+
+            // 添加样式和说明
+            const styleAndFooter = [
+              '<style>',
+              '.homepage-search { max-width: 600px; margin: 2rem auto; padding: 0 1rem; position: relative; }',
+              '.homepage-search .search-input { width: 100%; padding: 0.8rem 1.2rem; font-size: 1rem; border: 2px solid #e0e0e0; border-radius: 8px; outline: none; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }',
+              '.homepage-search .search-input:focus { border-color: var(--theme-color, #42b983); box-shadow: 0 4px 12px rgba(66, 185, 131, 0.15); }',
+              '.search-results-panel { position: absolute; top: 100%; left: 1rem; right: 1rem; margin-top: 0.5rem; background: white; border: 2px solid var(--theme-color, #42b983); border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15); max-height: 400px; overflow-y: auto; z-index: 1000; display: none; }',
+              '.search-results-panel.active { display: block; }',
+              '.search-result-item { padding: 0.8rem 1.2rem; border-bottom: 1px solid #f0f0f0; cursor: pointer; transition: background 0.2s ease; }',
+              '.search-result-item:hover { background: #f5f5f5; }',
+              '.search-result-item:last-child { border-bottom: none; }',
+              '.search-result-title { font-weight: 600; color: var(--theme-color, #42b983); margin-bottom: 0.3rem; }',
+              '.search-result-content { font-size: 0.85rem; color: #666; line-height: 1.4; }',
+              '.search-no-results { padding: 1rem 1.2rem; text-align: center; color: #999; }',
+              '.tag-buttons { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-bottom: 2rem; }',
+              '.tag-button { display: inline-flex; align-items: center; padding: 0.6rem 1.2rem; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white !important; border-radius: 8px; text-decoration: none; font-weight: 500; transition: all 0.3s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }',
+              '.tag-button:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }',
+              '.tag-button .tag-count { margin-left: 0.5rem; background: rgba(255,255,255,0.3); padding: 0.2rem 0.5rem; border-radius: 12px; font-size: 0.85rem; }',
+              '.tag-button.special { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); font-size: 1.1rem; padding: 0.8rem 1.5rem; }',
+              '@media (max-width: 768px) { .tag-buttons { gap: 0.5rem; } .tag-button { padding: 0.5rem 1rem; font-size: 0.9rem; } }',
+              '</style>'
+            ].join('\n');
+
+            homeContent += styleAndFooter;
+
+            fs.writeFileSync(path.join(docsDir, 'README.md'), homeContent, 'utf8');
+            console.log('Updated homepage');
+
+            // 创建 tags 目录
+            const tagsDir = path.join(docsDir, 'tags');
+            if (!fs.existsSync(tagsDir)) {
+              fs.mkdirSync(tagsDir, { recursive: true });
+            }
+
+            // 清理旧的标签文件
+            const existingTagFiles = fs.readdirSync(tagsDir).filter(f => f.endsWith('.md'));
+            existingTagFiles.forEach(file => {
+              fs.unlinkSync(path.join(tagsDir, file));
+            });
+
+            // 为每个标签生成单独的页面
+            sortedLabels.forEach(label => {
+              const issues = issuesByLabel[label];
+              let tagContent = `# ${label}\n\n`;
+              tagContent += `共 ${issues.length} 篇文章\n\n`;
+              tagContent += '---\n\n';
+
+              issues.forEach(issue => {
+                const labels = new Set();
+                const titleTags = issue.title.split(/\s+/).filter(tag => tag.trim());
+                titleTags.forEach(tag => labels.add(tag.trim()));
+                issue.labels.forEach(l => labels.add(l.name));
+                const labelsArray = Array.from(labels).filter(l => l !== label);
+
+                const updateDate = new Date(issue.updated_at).toLocaleDateString();
+                const otherLabels = labelsArray.length > 0
+                  ? ' | ' + labelsArray.map(l => `[${l}](/tags/${encodeURIComponent(l)})`).join(', ')
+                  : '';
+
+                tagContent += `- [${issue.displayTitle}](/issue-${issue.number}) - ${updateDate}${otherLabels}\n`;
+              });
+
+              tagContent += '\n[← 返回首页](/)\n';
+
+              const tagFileName = `${label}.md`;
+              fs.writeFileSync(path.join(tagsDir, tagFileName), tagContent, 'utf8');
+            });
+
+            console.log(`Generated ${sortedLabels.length} tag pages`);
+
+            // 生成历史页面 - 所有文章按创建时间倒序
+            let historyContent = '# 📜 历史记录\n\n';
+            historyContent += '按创建时间倒序排列的所有文章。\n\n';
+            historyContent += '---\n\n';
+
+            // 按创建时间倒序排序
+            const issuesByDate = allIssues.sort((a, b) => {
+              return new Date(b.created_at) - new Date(a.created_at);
+            });
+
+            issuesByDate.forEach(issue => {
+              // 提取标题
+              let displayTitle = issue.title;
+              const body = issue.body || '';
+              const h1Match = body.match(/^#\s+(.+)$/m);
+              if (h1Match) {
+                displayTitle = h1Match[1].trim();
+              }
+
+              // 收集所有标签
+              const allLabels = new Set();
+              const titleTags = issue.title.split(/\s+/).filter(tag => tag.trim());
+              titleTags.forEach(tag => allLabels.add(tag.trim()));
+              issue.labels.forEach(label => allLabels.add(label.name));
+              const labelsArray = Array.from(allLabels);
+
+              // 格式化创建时间
+              const createdDate = new Date(issue.created_at).toLocaleDateString();
+
+              // 生成标签链接
+              const labelLinks = labelsArray.length > 0
+                ? ' | ' + labelsArray.map(l => `[${l}](/tags/${encodeURIComponent(l)})`).join(', ')
+                : '';
+
+              historyContent += `- [${displayTitle}](/issue-${issue.number}) - ${createdDate}${labelLinks}\n`;
+            });
+
+            historyContent += '\n[← 返回首页](/)\n';
+
+            fs.writeFileSync(path.join(docsDir, 'history.md'), historyContent, 'utf8');
+            console.log('Updated history page');
+
+      - name: Commit and push changes
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add docs/
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Sync issue #${{ github.event.issue.number }}: ${{ github.event.action }}"
+
+            # Try push with simple retry
+            if ! git push; then
+              echo "Push failed, fetching latest and retrying..."
+              git fetch origin gh-pages
+
+              # Check if we can fast-forward
+              if git merge-base --is-ancestor HEAD origin/gh-pages; then
+                echo "Local is behind, pulling..."
+                git pull --rebase origin gh-pages || {
+                  echo "Rebase failed, aborting and exiting"
+                  git rebase --abort
+                  exit 1
+                }
+                git push
+              else
+                echo "Conflict detected, exiting to let next queued action handle it"
+                exit 0
+              fi
+            fi
+          fi
