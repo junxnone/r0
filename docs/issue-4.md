@@ -1,11 +1,11 @@
 ---
-title: 万物层级关系
+title: 万物 层级 关系
 issue_number: 4
 author: junxnone
 created_at: 2026-05-09T04:06:56Z
-updated_at: 2026-05-20T07:42:57Z
+updated_at: 2026-05-20T07:43:05Z
 state: open
-labels: [万物层级关系]
+labels: [万物, 层级, 关系]
 ---
 
 万物层级不是简单的列表层级，下层属于上层，文件夹内的内容属于文件夹。
