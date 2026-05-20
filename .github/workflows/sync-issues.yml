@@ -148,7 +148,18 @@ jobs:
             };
 
             // 生成主页 - 按文章数量排序标签
-            let homeContent = '# T2 Wiki\n\n';
+            // 从 docs/index.html 中读取网站名称
+            let siteName = 'T2 Wiki'; // 默认值
+            const indexPath = path.join(docsDir, 'index.html');
+            if (fs.existsSync(indexPath)) {
+              const indexContent = fs.readFileSync(indexPath, 'utf8');
+              const nameMatch = indexContent.match(/name:\s*['"]([^'"]+)['"]/);
+              if (nameMatch) {
+                siteName = nameMatch[1];
+              }
+            }
+
+            let homeContent = `# ${siteName}\n\n`;
             homeContent += '> 基于 GitHub Issues 的 Wiki\n\n';
             homeContent += '<div class="homepage-search">\n';
             homeContent += '  <input type="search" placeholder="🔍 搜索文章..." class="search-input" />\n';
