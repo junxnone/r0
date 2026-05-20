@@ -4,7 +4,6 @@
 
 ---
 
-- [t2wiki Features](/issue-2) - 5/14/2026 | [Features](/tags/Features)
-- [TODO](/issue-1) - 5/14/2026 | [TODO](/tags/TODO)
+- [Vibe Coding](/issue-1) - 5/12/2026 | [VibeCoding](/tags/VibeCoding)
 
 [← 返回首页](/)

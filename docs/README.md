@@ -1,4 +1,4 @@
-# Review
+# T2 Wiki
 
 > 基于 GitHub Issues 的 Wiki
 
@@ -10,8 +10,7 @@
 ## 📚 按标签浏览
 
 <div class="tag-buttons">
-  <a href="#/tags/Features" class="tag-button">Features <span class="tag-count">1</span></a>
-  <a href="#/tags/TODO" class="tag-button">TODO <span class="tag-count">1</span></a>
+  <a href="#/tags/VibeCoding" class="tag-button">VibeCoding <span class="tag-count">1</span></a>
 </div>
 
 ## [📜 历史记录](/history)
