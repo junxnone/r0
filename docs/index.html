@@ -2,9 +2,9 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <title>T2 Wiki</title>
+  <title>Review</title>
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="T2 Wiki - Knowledge base powered by GitHub Issues">
+  <meta name="description" content="Review">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
   <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/lib/themes/vue.css">
   <!-- Theme toggle button -->
@@ -238,15 +238,15 @@
   </script>
   <script>
     window.$docsify = {
-      name: 'T2 Wiki',
+      name: 'Review',
       repo: (function() {
         const hostname = window.location.hostname;
         if (hostname.endsWith('.github.io')) {
           const owner = hostname.replace('.github.io', '');
-          const repo = window.location.pathname.split('/').filter(p => p)[0] || 't2wiki';
+          const repo = window.location.pathname.split('/').filter(p => p)[0] || 'r0';
           return `https://github.com/${owner}/${repo}`;
         }
-        return 'https://github.com/junxnone/t2wiki';
+        return 'https://github.com/junxnone/r0';
       })(),
       loadSidebar: false,
       auto2top: true,
@@ -487,12 +487,12 @@
                 if (hostname.endsWith('.github.io')) {
                   const owner = hostname.replace('.github.io', '');
                   const pathParts = pathname.split('/').filter(p => p);
-                  const repo = pathParts[0] || 't2wiki';
+                  const repo = pathParts[0] || 'r0';
                   issueUrl = `https://github.com/${owner}/${repo}/issues/${metadata.issue_number}`;
                 } else {
                   // Local development fallback - construct from pathname
                   const pathParts = pathname.split('/').filter(p => p);
-                  const repo = pathParts[0] || 't2wiki';
+                  const repo = pathParts[0] || 'r0';
                   issueUrl = `https://github.com/junxnone/${repo}/issues/${metadata.issue_number}`;
                 }
               }
