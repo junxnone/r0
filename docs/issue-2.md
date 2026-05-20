@@ -1,35 +1,11 @@
 ---
-title: t2wiki Features
+title: 人生 杠杆
 issue_number: 2
 author: junxnone
-created_at: 2026-05-14T02:47:00Z
-updated_at: 2026-05-14T05:40:19Z
+created_at: 2026-05-13T08:06:43Z
+updated_at: 2026-05-20T03:45:56Z
 state: open
-labels: [Features]
+labels: [人生, 杠杆]
 ---
 
-# t2wiki Features
-
-## 定位
-- t2 wiki 定位为服务于 `头脑风暴`。
-  - 当有新的领悟时，记录。
-  - 当有新的探索时，记录。
-  - 当有个好的 idea 时，记录分析需求。
- 
-## 功能
-- 有一个编辑器(github issue)
-- 能够搜索(docsify)，能够浏览，能够分类(标签实现)
-- 可以备份，可以迁移(github)
-- 可以关联(标签实现)
-
-
-
-## 实现
-
-- issue 维护 wiki
-- 标签页
-- 搜素
-- 历史页面
-
-
-
+如果不是出生就继承了大笔资源和财富的人，人生资产一定是按照这样的顺序去积攒：能力资产、人际资产、人力资产，最后才是金融资产。 能力是首要的，决定了你是谁，后面三个都是杠杆，如果没有前面的 1，再多的 0 只是 0

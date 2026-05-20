@@ -1,4 +1,4 @@
-# T2 Wiki
+# Review
 
 > 基于 GitHub Issues 的 Wiki
 
@@ -11,6 +11,8 @@
 
 <div class="tag-buttons">
   <a href="#/tags/VibeCoding" class="tag-button">VibeCoding <span class="tag-count">1</span></a>
+  <a href="#/tags/%E4%BA%BA%E7%94%9F" class="tag-button">人生 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E6%9D%A0%E6%9D%86" class="tag-button">杠杆 <span class="tag-count">1</span></a>
 </div>
 
 ## [📜 历史记录](/history)
