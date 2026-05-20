@@ -11,7 +11,10 @@
 
 <div class="tag-buttons">
   <a href="#/tags/VibeCoding" class="tag-button">VibeCoding <span class="tag-count">1</span></a>
+  <a href="#/tags/%E4%B8%87%E7%89%A9" class="tag-button">万物 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%BA%BA%E7%94%9F" class="tag-button">人生 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E5%85%B3%E7%B3%BB" class="tag-button">关系 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E5%B1%82%E7%BA%A7" class="tag-button">层级 <span class="tag-count">1</span></a>
   <a href="#/tags/%E6%9D%A0%E6%9D%86" class="tag-button">杠杆 <span class="tag-count">1</span></a>
   <a href="#/tags/%E7%BC%93%E5%AD%98" class="tag-button">缓存 <span class="tag-count">1</span></a>
   <a href="#/tags/%E8%84%91" class="tag-button">脑 <span class="tag-count">1</span></a>
