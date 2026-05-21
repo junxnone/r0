@@ -12,7 +12,9 @@
 <div class="tag-buttons">
   <a href="#/tags/VibeCoding" class="tag-button">VibeCoding <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%B8%87%E7%89%A9" class="tag-button">万物 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B" class="tag-button">个人能力 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%BA%BA%E7%94%9F" class="tag-button">人生 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E4%BF%AE%E8%BA%AB" class="tag-button">修身 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%85%B3%E7%B3%BB" class="tag-button">关系 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%B1%82%E7%BA%A7" class="tag-button">层级 <span class="tag-count">1</span></a>
   <a href="#/tags/%E6%9D%A0%E6%9D%86" class="tag-button">杠杆 <span class="tag-count">1</span></a>
