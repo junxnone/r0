@@ -4,6 +4,6 @@
 
 ---
 
-- [Vibe Coding](/issue-1) - 5/20/2026
+- [Vibe Coding](/issue-1) - 5/21/2026 | [AI](/tags/AI)
 
 [← 返回首页](/)

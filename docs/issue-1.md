@@ -3,9 +3,9 @@ title: Vibe Coding
 issue_number: 1
 author: junxnone
 created_at: 2026-05-12T07:55:54Z
-updated_at: 2026-05-20T03:39:16Z
+updated_at: 2026-05-21T09:18:30Z
 state: open
-labels: [VibeCoding]
+labels: [VibeCoding, AI]
 ---
 
 # Vibe Coding

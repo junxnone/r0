@@ -10,6 +10,7 @@
 ## 📚 按标签浏览
 
 <div class="tag-buttons">
+  <a href="#/tags/AI" class="tag-button">AI <span class="tag-count">1</span></a>
   <a href="#/tags/VibeCoding" class="tag-button">VibeCoding <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%B8%87%E7%89%A9" class="tag-button">万物 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B" class="tag-button">个人能力 <span class="tag-count">1</span></a>
