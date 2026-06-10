@@ -15,13 +15,17 @@
   <a href="#/tags/%E4%B8%87%E7%89%A9" class="tag-button">万物 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%B8%AA%E4%BA%BA%E8%83%BD%E5%8A%9B" class="tag-button">个人能力 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%BA%BA%E7%94%9F" class="tag-button">人生 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E4%BF%A1%E6%81%AF" class="tag-button">信息 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%BF%AE%E8%BA%AB" class="tag-button">修身 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%85%B3%E7%B3%BB" class="tag-button">关系 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%8D%B1%E6%9C%BA" class="tag-button">危机 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E5%8F%98%E7%8E%B0" class="tag-button">变现 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%B1%82%E7%BA%A7" class="tag-button">层级 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E6%8A%80%E8%83%BD" class="tag-button">技能 <span class="tag-count">1</span></a>
   <a href="#/tags/%E6%9B%BF%E4%BB%A3" class="tag-button">替代 <span class="tag-count">1</span></a>
   <a href="#/tags/%E6%9D%A0%E6%9D%86" class="tag-button">杠杆 <span class="tag-count">1</span></a>
   <a href="#/tags/%E6%BA%AF%E6%BA%90" class="tag-button">溯源 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E7%9F%A5%E8%AF%86" class="tag-button">知识 <span class="tag-count">1</span></a>
   <a href="#/tags/%E7%A0%94%E7%A9%B6" class="tag-button">研究 <span class="tag-count">1</span></a>
   <a href="#/tags/%E7%B3%BB%E7%BB%9F" class="tag-button">系统 <span class="tag-count">1</span></a>
   <a href="#/tags/%E7%BC%93%E5%AD%98" class="tag-button">缓存 <span class="tag-count">1</span></a>
