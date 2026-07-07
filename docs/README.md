@@ -19,6 +19,7 @@
   <a href="#/tags/%E4%BF%A1%E6%81%AF" class="tag-button">信息 <span class="tag-count">1</span></a>
   <a href="#/tags/%E4%BF%AE%E8%BA%AB" class="tag-button">修身 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%85%B3%E7%B3%BB" class="tag-button">关系 <span class="tag-count">1</span></a>
+  <a href="#/tags/%E5%8A%BF" class="tag-button">势 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%8D%B1%E6%9C%BA" class="tag-button">危机 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%8F%91%E7%8E%B0" class="tag-button">发现 <span class="tag-count">1</span></a>
   <a href="#/tags/%E5%8F%98%E7%8E%B0" class="tag-button">变现 <span class="tag-count">1</span></a>
